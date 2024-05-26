@@ -17,7 +17,7 @@ WEBHOOK_URL = 'https://hooks.slack.com/services/T02AEC8RD/B0750D17X45/JRL9m0fP4Z
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, scope=SCOPE))
 
 # 指定したプレイリストのIDを入力
-playlist_id = '5FTDGam5gK1YtRi82zFVOW'
+playlist_id = '7Dnr7tujQCxUlDWFQq4awh'
 
 # 指定したプレイリストの曲を取得
 playlist = sp.playlist_tracks(playlist_id)
@@ -39,7 +39,7 @@ message = {
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"Today's Recommened : <{track_url}|{track_name} by {artist_name} ({album_name})>"
+                "text": f"Today's Recommened : <{track_url}|{artist_name} - {track_name}>"
             }
         }
     ]
