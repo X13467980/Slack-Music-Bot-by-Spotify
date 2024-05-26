@@ -39,7 +39,7 @@ message = {
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"Today's Recommened : <{track_url}|{artist_name} - {track_name}>"
+                "text": f"Today's Recommend : <{track_url}|{artist_name} - {track_name}>"
             }
         }
     ]
