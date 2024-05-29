@@ -40,8 +40,30 @@ data = response.json()
 if data['resultCount'] > 0:
     song = data['results'][0]
     apple_music_url = song['trackViewUrl']
+    apple_music_web_player_url = f"https://embed.music.apple.com/?url={apple_music_url}"
 else:
     apple_music_url = "曲が見つかりませんでした"
+    apple_music_web_player_url = ""
+
+# Slackに送信するメッセージを作成（Apple Music）
+apple_music_message = {
+    "blocks": [
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": f"*Today's Recommended Song (Apple Music):*\n<{apple_music_url}|{artist_name} - {track_name}>"
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": apple_music_web_player_url
+            }
+        }
+    ]
+}
 
 # Slackに送信するメッセージを作成（Spotify）
 spotify_message = {
@@ -56,28 +78,15 @@ spotify_message = {
     ]
 }
 
-# Slackに送信するメッセージを作成（Apple Music）
-apple_music_message = {
-    "blocks": [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": f"*Today's Recommended Song (Apple Music):*\n<{apple_music_url}|{artist_name} - {track_name}>"
-            }
-        }
-    ]
-}
-
 # ペイロードを定義
-spotify_payload = json.dumps(spotify_message)
 apple_music_payload = json.dumps(apple_music_message)
-
-# POSTリクエストを送信（Spotify）
-response = requests.post(WEBHOOK_URL, headers={'Content-Type': 'application/json'}, data=spotify_payload)
+spotify_payload = json.dumps(spotify_message)
 
 # POSTリクエストを送信（Apple Music）
 response = requests.post(WEBHOOK_URL, headers={'Content-Type': 'application/json'}, data=apple_music_payload)
+
+# POSTリクエストを送信（Spotify）
+response = requests.post(WEBHOOK_URL, headers={'Content-Type': 'application/json'}, data=spotify_payload)
 
 # レスポンスのステータスコードをチェック
 if response.status_code == 200:
