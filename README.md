@@ -1,1 +1,1 @@
-# Slack-Music-Bot-by-Spotify
+# Slack-Music-Bot
