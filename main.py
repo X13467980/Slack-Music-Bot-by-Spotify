@@ -23,28 +23,14 @@ playlist_id = '7Dnr7tujQCxUlDWFQq4awh'
 playlist = sp.playlist_tracks(playlist_id)
 tracks = playlist['items']
 
-# 過去に送信した曲のIDを保持するリスト
-sent_track_ids = []
-
-# ランダムに1曲を選択（過去に送信した曲は除外）
-while True:
-    track = random.choice(tracks)['track']
-    track_id = track['id']
-    if track_id not in sent_track_ids:
-        break
+# ランダムに1曲を選択
+track = random.choice(tracks)['track']
 
 # 曲の情報を取得
 track_name = track['name']
 artist_name = track['artists'][0]['name']
 album_name = track['album']['name']
 track_url = track['external_urls']['spotify']
-
-# 送信済みの曲IDリストに追加
-sent_track_ids.append(track_id)
-
-# プレイリストの全曲を送信し終わった場合
-if len(sent_track_ids) == len(tracks):
-    sent_track_ids.clear()  # sent_track_idsリストを初期化
 
 # Slackに送信するメッセージを作成（Spotify）
 spotify_message = {
@@ -92,7 +78,7 @@ if data['resultCount'] > 0:
     }
     apple_music_payload = json.dumps(apple_music_message)
     response = requests.post(WEBHOOK_URL, headers={'Content-Type': 'application/json'}, data=apple_music_payload)
-
+    
     if response.status_code == 200:
         print("Apple Music メッセージが送信されました")
     else:
