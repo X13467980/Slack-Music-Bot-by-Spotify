@@ -1,17 +1,22 @@
+import os
 import requests
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import random
+from dotenv import load_dotenv
 
-# Spotify APIにアクセスするための認証情報
-CLIENT_ID = '801c2d22bb02478886affc4ea38f0e45'
-CLIENT_SECRET = '88f463df5cb64dd3aebe8ea7cc5f0e0a'
-REDIRECT_URI = 'http://localhost:3000/redirect'
-SCOPE = 'user-library-read'
+# .envファイルから環境変数をロード
+load_dotenv()
+
+# Spotify APIにアクセスするための認証情報を環境変数から取得
+CLIENT_ID = os.getenv('CLIENT_ID')
+CLIENT_SECRET = os.getenv('CLIENT_SECRET')
+REDIRECT_URI = os.getenv('REDIRECT_URI')
+SCOPE = os.getenv('SCOPE')
 
 # Slackの割り込み用Webhook URL
-WEBHOOK_URL = 'https://hooks.slack.com/services/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'
+WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 
 # SpotifyのAPIにアクセスするためのオブジェクトを作成
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, scope=SCOPE))
